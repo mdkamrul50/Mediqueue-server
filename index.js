@@ -47,6 +47,29 @@ async function run() {
       res.send(result);
     });
 
+
+    app.post('/tutors', async (req, res) => {
+      try {
+        const tutorData = req.body;
+
+        const result = await tutorCollection.insertOne(tutorData);
+
+        res.status(201).json({
+          success: true,
+          message: 'Tutor added successfully',
+          result,
+        });
+      } catch (error) {
+        console.log(error);
+
+        res.status(500).json({
+          success: false,
+          message: 'Failed to add tutor',
+        });
+      }
+    });
+
+
     app.post('/booking', async (req, res) => {
       const bookingData = req.body;
 
