@@ -138,6 +138,37 @@ async function run() {
       });
     });
 
+    app.patch('/tutors/:id', async (req, res) => {
+      try {
+        const id = req.params.id;
+        const updatedData = req.body;
+
+        const result = await tutorCollection.updateOne(
+          { _id: new ObjectId(id) },
+          { $set: updatedData }
+        );
+
+        res.send(result);
+      } catch (error) {
+        res.status(500).send({ message: 'Update failed' });
+      }
+    });
+
+    /* 🔴 DELETE TUTOR */
+    app.delete('/tutors/:id', async (req, res) => {
+      try {
+        const id = req.params.id;
+
+        const result = await tutorCollection.deleteOne({
+          _id: new ObjectId(id),
+        });
+
+        res.send(result);
+      } catch (error) {
+        res.status(500).send({ message: 'Delete failed' });
+      }
+    });
+
     app.get('/booking/:userId', async (req, res) => {
       const userId = req.params.userId;
 
