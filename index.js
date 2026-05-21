@@ -47,6 +47,13 @@ async function run() {
       res.send(result);
     });
 
+    app.get('/my-tutors/:userId', async (req, res) => {
+      const userId = req.params.userId;
+
+      const result = await tutorCollection.find({ userId }).toArray();
+
+      res.send(result);
+    });
 
     app.post('/tutors', async (req, res) => {
       try {
@@ -68,7 +75,6 @@ async function run() {
         });
       }
     });
-
 
     app.post('/booking', async (req, res) => {
       const bookingData = req.body;
