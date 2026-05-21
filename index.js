@@ -52,11 +52,9 @@ async function run() {
 
       const tutorId = bookingData.tutorId;
 
-  
       const tutor = await tutorCollection.findOne({
         _id: new ObjectId(tutorId),
       });
-
 
       if (!tutor) {
         return res.status(404).json({
@@ -65,7 +63,6 @@ async function run() {
         });
       }
 
-     
       if (tutor.slots <= 0) {
         return res.status(400).json({
           success: false,
@@ -73,14 +70,12 @@ async function run() {
         });
       }
 
-  
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 
       const sessionDate = new Date(tutor.sessionDate);
       sessionDate.setHours(0, 0, 0, 0);
 
-      
       if (today > sessionDate) {
         return res.status(400).json({
           success: false,
@@ -88,7 +83,6 @@ async function run() {
         });
       }
 
-      
       const alreadyBooked = await bookingCollection.findOne({
         userId: bookingData.userId,
         tutorId: bookingData.tutorId,
@@ -101,9 +95,7 @@ async function run() {
         });
       }
 
-     
       const result = await bookingCollection.insertOne(bookingData);
-
 
       await tutorCollection.updateOne(
         { _id: new ObjectId(tutorId) },
