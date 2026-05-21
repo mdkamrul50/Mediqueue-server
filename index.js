@@ -138,21 +138,20 @@ async function run() {
       });
     });
 
-    app.patch('/tutors/:id', async (req, res) => {
-      try {
-        const id = req.params.id;
-        const updatedData = req.body;
+ app.patch('/tutors/:id', async (req, res) => {
+   const id = req.params.id;
 
-        const result = await tutorCollection.updateOne(
-          { _id: new ObjectId(id) },
-          { $set: updatedData }
-        );
+   const updatedData = req.body;
 
-        res.send(result);
-      } catch (error) {
-        res.status(500).send({ message: 'Update failed' });
-      }
-    });
+   const result = await tutorCollection.updateOne(
+     { _id: new ObjectId(id) },
+     {
+       $set: updatedData,
+     }
+   );
+
+   res.send(result);
+ });
 
     /* 🔴 DELETE TUTOR */
     app.delete('/tutors/:id', async (req, res) => {
