@@ -79,7 +79,7 @@ async function run() {
       if (today > sessionDate) {
         return res.status(400).json({
           success: false,
-          message: 'Session date has expired',
+          message: 'Booking is not available yet for this tutor',
         });
       }
 
