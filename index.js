@@ -70,7 +70,7 @@ app.get('/tutors', async (req, res) => {
   const result = await cursor.toArray();
 
   res.send(result);
-});
+};);
 
     app.get('/tutors/:id', async (req, res) => {
       const id = req.params.id;
