@@ -28,14 +28,49 @@ async function run() {
     const tutorCollection = db.collection('tutors');
     const bookingCollection = db.collection('bookings');
 
-    app.get('/tutors', async (req, res) => {
-      const limit = parseInt(req.query.limit);
-      const cursor = tutorCollection.find().limit(limit);
+app.get('/tutors', async (req, res) => {
+  const limit = parseInt(req.query.limit);
 
-      const result = await cursor.toArray();
-      res.send(result);
-      console.log(result);
-    });
+  const search = req.query.search || '';
+
+  const startDate = req.query.startDate;
+
+  const endDate = req.query.endDate;
+
+  const query = {};
+
+  // 🔍 SEARCH BY NAME
+  if (search) {
+    query.name = {
+      $regex: search,
+      $options: 'i',
+    };
+  }
+
+  // 📅 FILTER BY DATE
+  if (startDate || endDate) {
+    query.createdAt = {};
+
+    if (startDate) {
+      query.createdAt.$gte = new Date(startDate);
+    }
+
+    if (endDate) {
+      query.createdAt.$lte = new Date(endDate);
+    }
+  }
+
+  let cursor = tutorCollection.find(query);
+
+  // LIMIT
+  if (limit) {
+    cursor = cursor.limit(limit);
+  }
+
+  const result = await cursor.toArray();
+
+  res.send(result);
+});
 
     app.get('/tutors/:id', async (req, res) => {
       const id = req.params.id;
@@ -58,6 +93,7 @@ async function run() {
     app.post('/tutors', async (req, res) => {
       try {
         const tutorData = req.body;
+        tutorData.createdAt = new Date();  //deci kam
 
         const result = await tutorCollection.insertOne(tutorData);
 
@@ -138,31 +174,30 @@ async function run() {
       });
     });
 
- app.patch('/tutors/:id', async (req, res) => {
-   const id = req.params.id;
+    app.patch('/tutors/:id', async (req, res) => {
+      const id = req.params.id;
 
-   const updatedData = req.body;
+      const updatedData = req.body;
 
-   const result = await tutorCollection.updateOne(
-     { _id: new ObjectId(id) },
-     {
-       $set: updatedData,
-     }
-   );
+      const result = await tutorCollection.updateOne(
+        { _id: new ObjectId(id) },
+        {
+          $set: updatedData,
+        }
+      );
 
-   res.send(result);
- });
+      res.send(result);
+    });
 
-  
-app.delete('/tutors/:id', async (req, res) => {
-  const id = req.params.id;
+    app.delete('/tutors/:id', async (req, res) => {
+      const id = req.params.id;
 
-  const result = await tutorCollection.deleteOne({
-    _id: new ObjectId(id),
-  });
+      const result = await tutorCollection.deleteOne({
+        _id: new ObjectId(id),
+      });
 
-  res.send(result);
-});
+      res.send(result);
+    });
     app.get('/booking/:userId', async (req, res) => {
       const userId = req.params.userId;
 
