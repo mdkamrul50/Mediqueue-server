@@ -153,21 +153,16 @@ async function run() {
    res.send(result);
  });
 
-    /* 🔴 DELETE TUTOR */
-    app.delete('/tutors/:id', async (req, res) => {
-      try {
-        const id = req.params.id;
+  
+app.delete('/tutors/:id', async (req, res) => {
+  const id = req.params.id;
 
-        const result = await tutorCollection.deleteOne({
-          _id: new ObjectId(id),
-        });
+  const result = await tutorCollection.deleteOne({
+    _id: new ObjectId(id),
+  });
 
-        res.send(result);
-      } catch (error) {
-        res.status(500).send({ message: 'Delete failed' });
-      }
-    });
-
+  res.send(result);
+});
     app.get('/booking/:userId', async (req, res) => {
       const userId = req.params.userId;
 
