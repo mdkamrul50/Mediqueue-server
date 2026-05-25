@@ -45,6 +45,7 @@ async function run() {
           $regex: search,
           $options: 'i',
         };
+        console.log(search);
       }
 
       // 📅 FILTER BY DATE
