@@ -28,49 +28,50 @@ async function run() {
     const tutorCollection = db.collection('tutors');
     const bookingCollection = db.collection('bookings');
 
-app.get('/tutors', async (req, res) => {
-  const limit = parseInt(req.query.limit);
+    app.get('/tutors', async (req, res) => {
+      const limit = parseInt(req.query.limit);
 
-  const search = req.query.search || '';
+      const search = req.query.search || '';
 
-  const startDate = req.query.startDate;
+      const startDate = req.query.startDate;
 
-  const endDate = req.query.endDate;
+      const endDate = req.query.endDate;
 
-  const query = {};
+      const query = {};
 
-  // 🔍 SEARCH BY NAME
-  if (search) {
-    query.name = {
-      $regex: search,
-      $options: 'i',
-    };
-  }
+      // 🔍 SEARCH BY NAME
+      if (search) {
+        query.name = {
+          $regex: search,
+          $options: 'i',
+        };
+      }
 
-  // 📅 FILTER BY DATE
-  if (startDate || endDate) {
-    query.createdAt = {};
+      // 📅 FILTER BY DATE
+      if (startDate || endDate) {
+        query.createdAt = {};
+        console.log(startDate);
 
-    if (startDate) {
-      query.createdAt.$gte = new Date(startDate);
-    }
+        if (startDate) {
+          query.createdAt.$gte = new Date(startDate);
+        }
 
-    if (endDate) {
-      query.createdAt.$lte = new Date(endDate);
-    }
-  }
+        if (endDate) {
+          query.createdAt.$lte = new Date(endDate);
+        }
+      }
 
-  let cursor = tutorCollection.find(query);
+      let cursor = tutorCollection.find(query);
 
-  // LIMIT
-  if (limit) {
-    cursor = cursor.limit(limit);
-  }
+      // LIMIT
+      if (limit) {
+        cursor = cursor.limit(limit);
+      }
 
-  const result = await cursor.toArray();
+      const result = await cursor.toArray();
 
-  res.send(result);
-});
+      res.send(result);
+    });
 
     app.get('/tutors/:id', async (req, res) => {
       const id = req.params.id;
@@ -93,7 +94,7 @@ app.get('/tutors', async (req, res) => {
     app.post('/tutors', async (req, res) => {
       try {
         const tutorData = req.body;
-        tutorData.createdAt = new Date();  //deci kam
+        tutorData.createdAt = new Date(); //deci kam
 
         const result = await tutorCollection.insertOne(tutorData);
 
