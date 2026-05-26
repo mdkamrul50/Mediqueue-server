@@ -100,8 +100,7 @@ if (startDate || endDate) {
             tutorData.subject = [tutorData.subject];
           } //aikane o
 
-  
-        const result = await tutorCollection.insertOne(tutorData);
+          const result = await tutorCollection.insertOne(tutorData);
 
         res.status(201).json({
           success: true,
