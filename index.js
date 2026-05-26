@@ -96,8 +96,8 @@ if (startDate || endDate) {
         const tutorData = req.body;
         tutorData.createdAt = new Date(); //deci kam
 
-          if (!Array.isArray(tutorData.subject)) {
-            tutorData.subject = [tutorData.subject];
+          if (!Array.isArray(tutorData.subjects)) {
+            tutorData.subjects = [tutorData.subjects];
           } //aikane o
 
           const result = await tutorCollection.insertOne(tutorData);
