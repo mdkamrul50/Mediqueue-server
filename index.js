@@ -49,18 +49,17 @@ async function run() {
       }
 
       // 📅 FILTER BY DATE
-      if (startDate || endDate) {
-        query.createdAt = {};
-        console.log(startDate);
+if (startDate || endDate) {
+  query.sessionDate = {};
 
-        if (startDate) {
-          query.createdAt.$gte = new Date(startDate);
-        }
+  if (startDate) {
+    query.sessionDate.$gte = startDate;
+  }
 
-        if (endDate) {
-          query.createdAt.$lte = new Date(endDate);
-        }
-      }
+  if (endDate) {
+    query.sessionDate.$lte = endDate;
+  }
+}
 
       let cursor = tutorCollection.find(query);
 
